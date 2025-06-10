@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var showHomeView: Bool = false
-    @State private var isRegister = false
+    @State private var showLogin = false
+    @State private var showRegister = false
     
     var body: some View {
         
@@ -18,26 +18,29 @@ struct ContentView: View {
                 Text("Todo App")
                     .font(.largeTitle)
                     .bold()
-                NavigationLink(destination: HomeView(),
-                               isActive: $showHomeView
+                
+                NavigationLink(destination: LoginView(),
+                               isActive: $showLogin
                 ) {
                     EmptyView()
                 }
                 
+                
+                NavigationLink(destination: RegisterView(), isActive: $showRegister) {
+                    EmptyView()
+                }
+                
+                
                 Button("Login") {
-                    showHomeView = true
+                    showLogin = true
                 }
                 .buttonStyle(.borderedProminent)
                 
                 Button("Register") {
-                    isRegister = true
+                    showRegister = true
                 }
                 .buttonStyle(.bordered)
-                
-                NavigationLink(destination: RegisterView(), isActive: $isRegister) {
-                    EmptyView()
-                }
-                
+
             }
             .padding()
         }

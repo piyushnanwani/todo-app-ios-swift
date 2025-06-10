@@ -1,48 +1,54 @@
 //
-//  RegisterView.swift
+//  LoginView.swift
 //  Todo App3
 //
-//  Created by Piyush Nanwani on 09/06/25.
+//  Created by Piyush Nanwani on 10/06/25.
 //
 
 import SwiftUI
 import FirebaseAuth
-struct RegisterView: View {
-    @Environment(\.presentationMode) var presentationMode
+struct LoginView: View {
     @State private var email = ""
     @State private var password = ""
+    @State private var goToHome = false
     @State private var errorMessage = ""
+
     var body: some View {
         VStack(spacing: 20) {
-            Text("Register")
+            Text("Login")
                 .font(.title)
-                .bold()
             
             TextField("Email", text: $email)
+                .autocapitalization(.none)
                 .textFieldStyle(.roundedBorder)
-            
+     
             SecureField("Password", text: $password)
                 .textFieldStyle(.roundedBorder)
-            
-            Button("Register") {
-                Auth.auth().createUser(withEmail: email, password: password ) {
-                    result, error in if let error = error {
+     
+            Button("Login") {
+                Auth.auth().sign(withEmail: email, password: password) {
+                    result, error in
+                    if let error = error {
                         errorMessage = error.localizedDescription
                     } else {
-                        presentationMode.wrappedValue.dismiss()
+                        goToHome = true
                     }
                 }
-
             }
             
             if !errorMessage.isEmpty {
                 Text(errorMessage)
                     .foregroundStyle(.red)
             }
+            
+            NavigationLink(destination: HomeView(), isActive: $goToHome) {
+                EmptyView()
+            }
         }
+        .padding()
     }
 }
 
 #Preview {
-    RegisterView()
+    LoginView()
 }
